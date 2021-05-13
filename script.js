@@ -1,4 +1,4 @@
-const imagesArr = ["img/image6.png", "img/image5.png", "img/image4.png", "img/image3.jpg", "img/image2.png", "img/image1.png"];
+const imagesArr = ["img/image1.png", "img/image2.png", "img/image3.jpg", "img/image4.png", "img/image5.png", "img/image6.png"];
 
 let curSlideIndex = localStorage.getItem("cur_slide_index") === null ? 1 : parseInt(localStorage.getItem("cur_slide_index"));
 let switchInterval;
@@ -11,11 +11,22 @@ addEventListener("keydown", handlePress);
 
 function initSliderAndDotsSection(imagesArr) {
     let slider_section = document.getElementById("slider_section");
-    slider_section.innerHTML = "";
     let dots_section = document.getElementById("dots");
     for (let i = 0; i < imagesArr.length; i++) {
-        slider_section.appendChild(document.createElement("li"));
+        let imgContainer  = document.createElement("div");
+        imgContainer.setAttribute("class", "my_slides");
+        let img = document.createElement("img");
+        img.setAttribute("class", "current_image");
+        img.setAttribute("src", imagesArr[i]);
+        slider_section.appendChild(imgContainer).appendChild(img);
+        let dot = document.createElement("span");
+        dot.setAttribute("class", "dot");
+        dot.addEventListener("click", () => changeCurrentSlide(i + 1));
+        dots_section.appendChild(dot);
     }
+    document.getElementById("auto_slide_btn").addEventListener("click", () => changeSlideOption());
+    document.getElementById("next").addEventListener("click", () => changeNextSlide(1));
+    document.getElementById("prev").addEventListener("click", () => changeNextSlide(-1));
 }
 
 function changeNextSlide(delta) {
